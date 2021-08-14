@@ -12,7 +12,7 @@
 ChatBot::ChatBot()
 {
     // invalidate data handles
-    _image = nullptr;
+    _image = NULL;
     _chatLogic = nullptr;
     _rootNode = nullptr;
 }
@@ -32,7 +32,7 @@ ChatBot::ChatBot(std::string filename)
 
 ChatBot::~ChatBot()
 {
-    std::cout << "ChatBot Destructor" << std::endl;
+    std::cout << "ChatBot Destructor: " <<  _image << std::endl;
 
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
@@ -44,6 +44,52 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+
+ChatBot::ChatBot(ChatBot &source)
+{
+    std::cout << "copy constructor\n";
+
+    _image = (wxBitmap *)malloc(sizeof(wxBitmap));
+    *_image = *source._image;
+}
+
+ChatBot &ChatBot::operator=(ChatBot &source)
+{
+    std::cout << "copy assignment\n";
+
+    if (this == &source) {
+        return *this;
+    }
+
+    _image = (wxBitmap *)malloc(sizeof(wxBitmap));
+    *_image = *source._image;
+    
+    return *this;
+}
+
+ChatBot::ChatBot(ChatBot &&source) 
+{
+    std::cout << "move constructor\n";
+
+    _image = (wxBitmap *)malloc(sizeof(wxBitmap));
+    *_image = *source._image;
+    source._image = nullptr;
+}
+
+ChatBot &ChatBot::operator=(ChatBot &&source)
+{
+    std::cout << "move assignment\n";
+
+    if (this == &source) {
+        return *this;
+    }
+
+    _image = (wxBitmap *)malloc(sizeof(wxBitmap));
+    *_image = *source._image;
+    source._image = nullptr;
+
+    return *this;
+}
 
 ////
 //// EOF STUDENT CODE
