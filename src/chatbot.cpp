@@ -50,7 +50,7 @@ ChatBot::ChatBot(ChatBot &source)
     std::cout << "copy constructor\n";
 
     _image = (wxBitmap *)malloc(sizeof(wxBitmap));
-    *_image = *source._image;
+    memcpy(_image, source._image, sizeof(wxBitmap));
 }
 
 ChatBot &ChatBot::operator=(ChatBot &source)
@@ -62,18 +62,16 @@ ChatBot &ChatBot::operator=(ChatBot &source)
     }
 
     _image = (wxBitmap *)malloc(sizeof(wxBitmap));
-    *_image = *source._image;
+    memcpy(_image, source._image, sizeof(wxBitmap));
     
     return *this;
 }
 
 ChatBot::ChatBot(ChatBot &&source) 
+    : _image(source._image)
 {
     std::cout << "move constructor\n";
-
-    _image = (wxBitmap *)malloc(sizeof(wxBitmap));
-    *_image = *source._image;
-    source._image = nullptr;
+    source._image = NULL;
 }
 
 ChatBot &ChatBot::operator=(ChatBot &&source)
@@ -84,9 +82,13 @@ ChatBot &ChatBot::operator=(ChatBot &&source)
         return *this;
     }
 
-    _image = (wxBitmap *)malloc(sizeof(wxBitmap));
-    *_image = *source._image;
-    source._image = nullptr;
+    // Release any resource we're holding
+    if (_image != NULL)
+        delete _image;
+ 
+    // Transfer ownership
+    _image = source._image;
+    source._image = NULL;
 
     return *this;
 }
