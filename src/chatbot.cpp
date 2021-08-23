@@ -101,8 +101,9 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
     // loop over all edges and keywords and compute Levenshtein distance to query
     typedef std::pair<GraphEdge *, int> EdgeDist;
     std::vector<EdgeDist> levDists; // format is <ptr,levDist>
+    size_t size = _currentNode->GetNumberOfChildEdges();
 
-    for (size_t i = 0; i < _currentNode->GetNumberOfChildEdges(); ++i)
+    for (size_t i = 0; i < size; ++i)
     {
         GraphEdge *edge = _currentNode->GetChildEdgeAtIndex(i);
         for (auto keyword : edge->GetKeywords())
