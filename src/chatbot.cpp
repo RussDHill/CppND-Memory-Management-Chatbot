@@ -51,6 +51,11 @@ ChatBot::ChatBot(ChatBot &source)
 
     _image = (wxBitmap *)malloc(sizeof(wxBitmap));
     memcpy(_image, source._image, sizeof(wxBitmap));
+
+    _currentNode = source._currentNode;
+    _rootNode = source._rootNode;
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
 }
 
 ChatBot &ChatBot::operator=(ChatBot &source)
@@ -63,6 +68,11 @@ ChatBot &ChatBot::operator=(ChatBot &source)
 
     _image = (wxBitmap *)malloc(sizeof(wxBitmap));
     memcpy(_image, source._image, sizeof(wxBitmap));
+
+    _currentNode = source._currentNode;
+    _rootNode = source._rootNode;
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
     
     return *this;
 }
@@ -70,8 +80,16 @@ ChatBot &ChatBot::operator=(ChatBot &source)
 ChatBot::ChatBot(ChatBot &&source) 
     : _image(source._image)
 {
+    _currentNode = source._currentNode;
+    _rootNode = source._rootNode;
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+
     std::cout << "move constructor\n";
     source._image = NULL;
+    source._currentNode = nullptr;
+    source._rootNode = nullptr;
+    source._rootNode = nullptr;
 }
 
 ChatBot &ChatBot::operator=(ChatBot &&source)
@@ -85,10 +103,31 @@ ChatBot &ChatBot::operator=(ChatBot &&source)
     // Release any resource we're holding
     if (_image != NULL)
         delete _image;
+
+ 
+    if (_currentNode != nullptr)
+        delete _currentNode;
+
+ 
+    if (_rootNode != nullptr)
+        delete _rootNode;
+
+ 
+    if (_chatLogic != nullptr)
+        delete _chatLogic;
+        
  
     // Transfer ownership
     _image = source._image;
+    _currentNode = source._currentNode;
+    _rootNode = source._rootNode;
+    _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+
     source._image = NULL;
+    source._currentNode = nullptr;
+    source._rootNode = nullptr;
+    source._rootNode = nullptr;
 
     return *this;
 }
