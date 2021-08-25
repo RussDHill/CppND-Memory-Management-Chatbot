@@ -145,7 +145,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             });
 
                             // create new edge
-                            auto edge = std::make_unique<GraphEdge>(id);
+                            std::unique_ptr<GraphEdge> edge = std::make_unique<GraphEdge>(id);
                             edge->SetChildNode(childNode->get());
                             edge->SetParentNode(parentNode->get());
 
@@ -201,9 +201,9 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
     // add chatbot to graph root node
     ChatBot chatBot("../images/chatbot.png");
-    _chatBot = &chatBot;
     chatBot.SetChatLogicHandle(this);
     chatBot.SetRootNode(rootNode);
+    _chatBot = &chatBot;
     rootNode->MoveChatbotHere(std::move(chatBot));
     
     ////
