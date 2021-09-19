@@ -129,17 +129,27 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                         ////
 
                         // find tokens for incoming (parent) and outgoing (child) node
-                        auto parentToken = std::find_if(tokens.begin(), tokens.end(), [](const std::pair<std::string, std::string> &pair) { return pair.first == "PARENT"; });
-                        auto childToken = std::find_if(tokens.begin(), tokens.end(), [](const std::pair<std::string, std::string> &pair) { return pair.first == "CHILD"; });
+                        auto parentToken = std::find_if(tokens.begin(), tokens.end(), 
+                                [](const std::pair<std::string, std::string> &pair) 
+                        { 
+                            return pair.first == "PARENT"; 
+                        });
+                        auto childToken = std::find_if(tokens.begin(), tokens.end(), 
+                                [](const std::pair<std::string, std::string> &pair) 
+                        { 
+                            return pair.first == "CHILD"; 
+                        });
 
                         if (parentToken != tokens.end() && childToken != tokens.end())
                         {
                             // get iterator on incoming and outgoing node via ID search
-                            auto parentNode = std::find_if(_nodes.begin(), _nodes.end(), [&parentToken](std::shared_ptr<GraphNode> const& node) 
+                            auto parentNode = std::find_if(_nodes.begin(), _nodes.end(), 
+                                    [&parentToken](const std::shared_ptr<GraphNode> const& node) 
                             { 
                                 return node->GetID() == std::stoi(parentToken->second); 
                             });
-                            auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](std::shared_ptr<GraphNode> const& node) 
+                            auto childNode = std::find_if(_nodes.begin(), _nodes.end(), 
+                                    [&childToken](const std::shared_ptr<GraphNode> const& node) 
                             { 
                                 return node->GetID() == std::stoi(childToken->second); 
                             });
